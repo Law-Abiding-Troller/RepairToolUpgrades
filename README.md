@@ -21,7 +21,6 @@ My Repair Tool Upgrades Subnautica Mod. Find the upgrades in the Fabricator! The
 
 ## Known Bugs:
 
- - You cannot insert anything into the storage container. Currently fixing, will release with v0.1.1 later tonight
  - The Repair Tool is not removed from tools. Its a Nautilus bug. Will be fixed when Nautilus updates to 1.0.0.pre-36
 
 ## Some other notes:
@@ -39,3 +38,5 @@ Discord User: Law Abiding Troller. I am in the Subnautica Moding discord server 
  - Added Mk 1 Speed Upgrade. Craftable in the Repair Tool tab^
  - Added Mk 2 Speed Upgrade. Craftable in the Repair Tool tab |
  - Added Mk 3 Speed Upgrade. Craftable in the Repair Tool tab |
+## v0.1.1
+ - Fixed not being able to put anything into the Repair Tool Storage Container
