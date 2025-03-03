@@ -37,5 +37,5 @@ Discord User: Law Abiding Troller. I am in the Subnautica Moding discord server 
  - Added a tab under Tools in the fabricator called Repair Tool
  - Added the ability to craft the Repair Tool in said tab
  - Added Mk 1 Speed Upgrade. Craftable in the Repair Tool tab ^
- - Added Mk 2 Speed Upgrade. Craftable in the Repair Tool tab :
- - Added Mk 3 Speed Upgrade. Craftable in the Repair Tool tab :
+ - Added Mk 2 Speed Upgrade. Craftable in the Repair Tool tab  :
+ - Added Mk 3 Speed Upgrade. Craftable in the Repair Tool tab  :
