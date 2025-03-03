@@ -21,7 +21,7 @@ My Repair Tool Upgrades Subnautica Mod. Find the upgrades in the Fabricator! The
 
 ## Known Bugs:
 
- - The Repair Tool is not removed from tools. Its a Nautilus bug. Will be fixed when Nautilus updates to 1.0.0.pre-36
+None! I dare you to break the current version without decompiling it!
 
 ## Some other notes:
 
