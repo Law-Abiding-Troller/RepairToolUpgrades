@@ -40,3 +40,5 @@ Discord User: Law Abiding Troller. I am in the Subnautica Moding discord server 
  - Added Mk 3 Speed Upgrade. Craftable in the Repair Tool tab |
 ## v0.1.1
  - Fixed not being able to put anything into the Repair Tool Storage Container
+##
+ - Fixed Mk 2 and Mk 3 Repair Tool Speed Upgrade not actually increasing the Repair speed
