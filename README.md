@@ -23,9 +23,12 @@ My Repair Tool Upgrades Subnautica Mod. Find the upgrades in the Fabricator! The
 
 None! I dare you to break the current version without decompiling it!
 
+## Update News:
+Rewriting the full mod at the moment. It isn't that buggy if I recall correctly. The next update to this mod should release in August along with Literal Seaglide Upgrades. However, it may release sooner depending on how much I get done
+
 ## Some other notes:
 
-Discord User: Law Abiding Troller. I am in the Subnautica Moding discord server as LawAbidingTrollerIsOkAtMods. DM or Ping me there.
+Discord User: Law Abiding Coder. I am in the Subnautica Moding discord server. DM or Ping me there.
 
 # Changelog
 ## v0.1.0 (what this mod adds to the game)
