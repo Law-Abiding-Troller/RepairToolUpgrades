@@ -7,6 +7,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>11</LangVersion>
 	<RootNamespace>RepairToolUpgrades</RootNamespace>
+    <BepInExPluginName>RepairToolUpgrades</BepInExPluginName>
+    <BepInExPluginGuid>com.lawabidingmodder.rtu</BepInExPluginGuid>
 
     <RestoreAdditionalProjectSources>
       https://api.nuget.org/v3/index.json;
@@ -28,7 +30,9 @@
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Subnautica\BepInEx\plugins\RepairToolUpgrades&quot;" />
-  </Target>
+  <ItemGroup>
+    <Reference Include="UpgradesLIB">
+      <HintPath>/Users/coltwiedermann/Library/Application Support/Steam/steamapps/common/Subnautica/BepInEx/plugins/ToolsUpgradesLIB/UpgradesLIB.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

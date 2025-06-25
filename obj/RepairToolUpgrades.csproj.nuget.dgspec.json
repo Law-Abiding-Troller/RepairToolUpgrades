@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Colt\\Documents\\RepairToolUpgrades\\RepairToolUpgrades.csproj": {}
+    "/Users/coltwiedermann/Documents/GitHub/RepairToolUpgrades/RepairToolUpgrades.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Colt\\Documents\\RepairToolUpgrades\\RepairToolUpgrades.csproj": {
+    "/Users/coltwiedermann/Documents/GitHub/RepairToolUpgrades/RepairToolUpgrades.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Colt\\Documents\\RepairToolUpgrades\\RepairToolUpgrades.csproj",
+        "projectUniqueName": "/Users/coltwiedermann/Documents/GitHub/RepairToolUpgrades/RepairToolUpgrades.csproj",
         "projectName": "RepairToolUpgrades",
-        "projectPath": "C:\\Users\\Colt\\Documents\\RepairToolUpgrades\\RepairToolUpgrades.csproj",
-        "packagesPath": "C:\\Users\\Colt\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Colt\\Documents\\RepairToolUpgrades\\obj\\",
+        "projectPath": "/Users/coltwiedermann/Documents/GitHub/RepairToolUpgrades/RepairToolUpgrades.csproj",
+        "packagesPath": "/Users/coltwiedermann/.nuget/packages/",
+        "outputPath": "/Users/coltwiedermann/Documents/GitHub/RepairToolUpgrades/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Colt\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/coltwiedermann/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net472"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {},
           "https://api.nuget.org/v3/index.json": {},
           "https://nuget.bepinex.dev/v3/index.json": {}
@@ -47,7 +40,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net472": {
@@ -90,7 +83,7 @@
               "version": "[2019.4.36, )"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.301/RuntimeIdentifierGraph.json"
         }
       }
     }

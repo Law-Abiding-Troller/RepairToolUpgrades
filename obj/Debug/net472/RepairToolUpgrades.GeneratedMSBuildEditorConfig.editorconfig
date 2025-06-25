@@ -1,6 +1,6 @@
 is_global = true
 build_property.RootNamespace = RepairToolUpgrades
-build_property.ProjectDir = C:\Users\Colt\Documents\RepairToolUpgrades\
+build_property.ProjectDir = /Users/coltwiedermann/Documents/GitHub/RepairToolUpgrades/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.CsWinRTUseWindowsUIXamlProjections = false
