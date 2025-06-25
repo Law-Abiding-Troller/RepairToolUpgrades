@@ -12,11 +12,11 @@ public class WelderPatches
 {
     [HarmonyPatch(nameof(Welder.Update))]
     [HarmonyPostfix]
-    public static void Update_Postfix(Welder instance)
+    public static void Update_Postfix(Welder __instance)
     {
-        if (Player.main.GetRightHandHeld()) {instance.Weld();}
-        if (instance == null) return;
-        var tempstorage = instance.GetComponent<StorageContainer>();
+        if (Player.main.GetRightHandHeld()) {__instance.Weld();}
+        if (__instance == null) return;
+        var tempstorage = __instance.GetComponent<StorageContainer>();
         if (tempstorage == null) return;
         if (Input.GetKeyDown(Config.OpenUpgradesContainerkeybind))
         {
@@ -26,11 +26,11 @@ public class WelderPatches
     }
     [HarmonyPatch(nameof(Welder.Weld))]
     [HarmonyPrefix]
-    public static void Weld_Prefix(Welder instance)
+    public static void Weld_Prefix(Welder __instance)
     {
-        instance.healthPerWeld = 0.1f;
-        instance.weldEnergyCost = 0.001f;
-        var tempstorage = instance.GetComponent<StorageContainer>();
+        __instance.healthPerWeld = 0.1f;
+        __instance.weldEnergyCost = 0.001f;
+        var tempstorage = __instance.GetComponent<StorageContainer>();
         if (tempstorage == null) {Plugin.Logger.LogError("Failed to get storage container component for Repair tool!");return;}
         UpgradeData tempdata;
         float highestspeed = 0;
@@ -48,12 +48,12 @@ public class WelderPatches
         if (highestspeed == 0 && highestefficiency == 0) return;
         if (highestspeed != 0)
         {
-            instance.healthPerWeld *= highestspeed;
+            __instance.healthPerWeld *= highestspeed;
         }
 
         if (highestefficiency != 0)
         {
-            instance.weldEnergyCost *= highestefficiency;
+            __instance.weldEnergyCost *= highestefficiency;
         }
     }
 }
@@ -63,11 +63,11 @@ public class PlayerToolPatches
 {
     [HarmonyPatch(nameof(PlayerTool.Awake))]
     [HarmonyPostfix]
-    public static void Awake_Postfix(PlayerTool instance)
+    public static void Awake_Postfix(PlayerTool __instance)
     {
-        if (instance == null) return;
-        if (instance is not Welder) return;
-        var tempstorage = instance.GetComponent<StorageContainer>();
+        if (__instance == null) return;
+        if (__instance is not Welder) return;
+        var tempstorage = __instance.GetComponent<StorageContainer>();
         if (tempstorage == null) return;
         tempstorage.container._label = "REPAIR TOOL";
         var allowedtech = new[]
@@ -90,7 +90,8 @@ public static class WelderWeldPatch
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         return new CodeMatcher(instructions)
-            .MatchForward(false, new[] {new CodeMatch(OpCodes.Ldarg_0, new CodeMatch(OpCodes.Call, typeof(Time).GetProperty("time", BindingFlags.Public | BindingFlags.Static)?.GetGetMethod())) })
+            .MatchForward(true,  new CodeMatch(OpCodes.Ldarg_0), new CodeMatch(OpCodes.Ldc_I4_1), new CodeMatch(OpCodes.Stfld, true, nameof(Welder.fxIsPlaying)) )
+            .Advance(1)
             .RemoveInstructions(3)
             .InstructionEnumeration();
     }
