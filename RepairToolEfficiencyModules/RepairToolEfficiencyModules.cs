@@ -10,7 +10,8 @@ public class RepairToolEfficiencyModules
 {
     public static void Register(UpgradeData upgrade, PrefabInfo prefabinfo, CustomPrefab prefab, int mk, List<CraftData.Ingredient> recipe)
     {
-        prefabinfo = PrefabInfo.WithTechType($"RepairToolEfficiencyUpgradeMk{mk}", $"Repair Tool Efficiency Upgrade Mk {mk}", $"Mk {mk} efficiency upgrade for the Repair Tool. Increases the repair efficiency by {upgrade.Efficiency}x normal efficiency.");
+        prefabinfo = PrefabInfo.WithTechType($"RepairToolEfficiencyUpgradeMk{mk}", $"Repair Tool Efficiency Upgrade Mk {mk}", $"Mk {mk} efficiency upgrade for the Repair Tool. Increases the repair efficiency by {upgrade.Efficiency}x normal efficiency.")
+            .WithIcon(SpriteManager.Get(TechType.Welder));
         UpgradeData.UpgradeDataDict.Add(prefabinfo.TechType, upgrade);
         prefab = new CustomPrefab(prefabinfo);
         var clone = new CloneTemplate(prefabinfo, TechType.VehiclePowerUpgradeModule);
