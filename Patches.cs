@@ -90,7 +90,7 @@ public static class WelderWeldPatch
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         return new CodeMatcher(instructions)
-            .MatchForward(true,  new CodeMatch(OpCodes.Ldarg_0), new CodeMatch(OpCodes.Ldc_I4_1), new CodeMatch(OpCodes.Stfld, true, nameof(Welder.fxIsPlaying)) )
+            .MatchForward(true,  new CodeMatch(OpCodes.Ldarg_0), new CodeMatch(OpCodes.Ldc_I4_1), new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(Welder), nameof(Welder.timeLastWelded))) )
             .Advance(1)
             .RemoveInstructions(3)
             .InstructionEnumeration();
