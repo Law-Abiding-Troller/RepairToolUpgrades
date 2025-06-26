@@ -98,14 +98,17 @@ public class CyclopsExternalDamageManagerPatches
 [HarmonyPatch(nameof(Welder.Weld))]
 [HarmonyDebug]
 public static class WelderWeldPatch
-{
+{/*.Advance(-12)
+             .RemoveInstructions(11)
+             .Advance(4)*/
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         return new CodeMatcher(instructions)
-            .MatchForward(true, new[] {new CodeMatch(OpCodes.Ldarg_0), new CodeMatch(OpCodes.Ldc_I4_1), new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(Welder), nameof(Welder.fxIsPlaying))) })
-            /*.Advance(-12)
-            .RemoveInstructions(11)
-            .Advance(4)*/
+            .MatchForward(false, new[] {new CodeMatch(OpCodes.Ldarg_0), 
+                new CodeMatch(OpCodes.Call, 
+                    AccessTools.PropertyGetter(typeof(Time), nameof(Time.time))), 
+                new CodeMatch(OpCodes.Stfld, 
+                    AccessTools.Field(typeof(Welder), nameof(Welder.timeLastWelded))) })
             .RemoveInstructions(3)
             .InstructionEnumeration();
     }
