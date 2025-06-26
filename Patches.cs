@@ -10,11 +10,13 @@ namespace LawAbidingTroller.RepairToolUpgrades;
 [HarmonyPatch(typeof(Welder))]
 public class WelderPatches
 {
+    private static float _time = 0;
     [HarmonyPatch(nameof(Welder.Update))] [HarmonyPostfix]
     public static void Update_Postfix(Welder __instance)
     {
         if (__instance == null) {Plugin.Logger.LogError($"__instance is null in {nameof(Update_Postfix)}!");return;}
-        if (__instance.usedThisFrame) {__instance.Weld(); }
+        _time += Time.deltaTime;
+        if (__instance.usedThisFrame && _time >= 0.1) {__instance.Weld(); _time = 0.0f; }
         var tempstorage = __instance.GetComponent<StorageContainer>();
         if (tempstorage == null) {Plugin.Logger.LogError($"tempstorage is null in {nameof(Update_Postfix)}!");return;}
         if (Input.GetKeyDown(Config.OpenUpgradesContainerkeybind))
@@ -28,8 +30,8 @@ public class WelderPatches
     [HarmonyPrefix]
     public static void Weld_Prefix(Welder __instance)
     {
-        __instance.healthPerWeld = 0.5f * Time.deltaTime;
-        __instance.weldEnergyCost = 0.005f * Time.deltaTime;
+        __instance.healthPerWeld = 0.1f;
+        __instance.weldEnergyCost = 0.01f;
         var tempstorage = __instance.GetComponent<StorageContainer>();
         if (tempstorage == null) {Plugin.Logger.LogError("Failed to get storage container component for Repair tool!");return;}
         UpgradeData tempdata;
