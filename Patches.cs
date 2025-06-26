@@ -4,6 +4,7 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using RepairToolUpgrades.RepairToolModules;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 namespace LawAbidingTroller.RepairToolUpgrades;
 
@@ -16,9 +17,21 @@ public class WelderPatches
     {
         if (__instance == null) {Plugin.Logger.LogError($"__instance is null in {nameof(Update_Postfix)}!");return;}
         _time += Time.deltaTime;
-        if (__instance.usedThisFrame && _time >= 0.1) {__instance.Weld(); _time = 0.0f; }
+        if (__instance.usedThisFrame && _time >= 0.1f) {__instance.Weld(); _time = 0.0f; }
         var tempstorage = __instance.GetComponent<StorageContainer>();
         if (tempstorage == null) {Plugin.Logger.LogError($"tempstorage is null in {nameof(Update_Postfix)}!");return;}
+        if (tempstorage.container == null) {Plugin.Logger.LogError("tempstorage.container is null!");return;}
+        tempstorage.container._label = "REPAIR TOOL";
+        var allowedtech = new[]
+        {
+            RepairToolSpeedModuleMk1.Mk1Weldspeedprefabinfo.TechType,
+            RepairToolSpeedModuleMk2.Mk2Weldspeedprefabinfo.TechType,
+            RepairToolSpeedModuleMk3.Mk3Weldspeedprefabinfo.TechType,
+            Plugin.PrefabInfos[1].TechType,
+            Plugin.PrefabInfos[2].TechType,
+            Plugin.PrefabInfos[3].TechType
+        };
+        tempstorage.container.SetAllowedTechTypes(allowedtech);
         if (Input.GetKeyDown(Config.OpenUpgradesContainerkeybind))
         {
             if (tempstorage.open) { ErrorMessage.AddWarning("Close 'REPAIR TOOL' to open it" ); return; }
@@ -30,8 +43,8 @@ public class WelderPatches
     [HarmonyPrefix]
     public static void Weld_Prefix(Welder __instance)
     {
-        __instance.healthPerWeld = 0.1f;
-        __instance.weldEnergyCost = 0.01f;
+        __instance.healthPerWeld = 1f;
+        __instance.weldEnergyCost = 0.1f;
         var tempstorage = __instance.GetComponent<StorageContainer>();
         if (tempstorage == null) {Plugin.Logger.LogError("Failed to get storage container component for Repair tool!");return;}
         UpgradeData tempdata;
@@ -55,48 +68,44 @@ public class WelderPatches
 
         if (highestefficiency != 0)
         {
-            __instance.weldEnergyCost *= highestefficiency;
+            __instance.weldEnergyCost /= highestefficiency;
         }
     }
 }
 
-[HarmonyPatch(typeof(PlayerTool))]
-public class PlayerToolPatches
+[HarmonyPatch(typeof(CyclopsExternalDamageManager))]
+public class CyclopsExternalDamageManagerPatches
 {
-    [HarmonyPatch(nameof(PlayerTool.Awake))]
-    [HarmonyPostfix]
-    public static void Awake_Postfix(PlayerTool __instance)
+    [HarmonyPatch(nameof(CyclopsExternalDamageManager.RepairPoint))]
+    [HarmonyPrefix]
+    public static bool RepairPoint_Prefix(CyclopsExternalDamageManager __instance, CyclopsDamagePoint point)
     {
-        if (__instance == null) return;
-        if (__instance is not Welder) return;
-        var tempstorage = __instance.GetComponent<StorageContainer>();
-        if (tempstorage == null) return;
-        if (tempstorage.container == null) {Plugin.Logger.LogError("tempstorage.container is null!");return;}
-        tempstorage.container._label = "REPAIR TOOL";
-        var allowedtech = new[]
+        __instance.unusedDamagePoints.Add(point);
+        if (__instance.damagePoints.Length - __instance.unusedDamagePoints.Count == 0)
         {
-            RepairToolSpeedModuleMk1.Mk1Weldspeedprefabinfo.TechType,
-            RepairToolSpeedModuleMk2.Mk2Weldspeedprefabinfo.TechType,
-            RepairToolSpeedModuleMk3.Mk3Weldspeedprefabinfo.TechType,
-            Plugin.PrefabInfos[1].TechType,
-            Plugin.PrefabInfos[2].TechType,
-            Plugin.PrefabInfos[3].TechType
-        };
-        tempstorage.container.SetAllowedTechTypes(allowedtech);
+            __instance.subLiveMixin.AddHealth(__instance.subLiveMixin.maxHealth);
+        }
+        else
+        {
+            __instance.subLiveMixin.AddHealth(1f);
+        }
+        __instance.ToggleLeakPointsBasedOnDamage();
+        return false;
     }
 }
 
 [HarmonyPatch(typeof(Welder))]
 [HarmonyPatch(nameof(Welder.Weld))]
+[HarmonyDebug]
 public static class WelderWeldPatch
 {
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         return new CodeMatcher(instructions)
-            .MatchForward(false, new[] {new CodeMatch(OpCodes.Ldarg_0), new CodeMatch(OpCodes.Ldc_I4_1), new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(Welder), nameof(Welder.fxIsPlaying))) })
-            .Advance(-12)
+            .MatchForward(true, new[] {new CodeMatch(OpCodes.Ldarg_0), new CodeMatch(OpCodes.Ldc_I4_1), new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(Welder), nameof(Welder.fxIsPlaying))) })
+            /*.Advance(-12)
             .RemoveInstructions(11)
-            .Advance(4)
+            .Advance(4)*/
             .RemoveInstructions(3)
             .InstructionEnumeration();
     }
