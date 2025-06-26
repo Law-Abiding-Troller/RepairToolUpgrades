@@ -9,15 +9,16 @@ using UnityEngine.Assertions.Must;
 namespace LawAbidingTroller.RepairToolUpgrades;
 
 [HarmonyPatch(typeof(Welder))]
+[HarmonyDebug]
 public class WelderPatches
 {
-    private static float _time = 0;
+    private static Dictionary<Welder,float> timers = new();
     [HarmonyPatch(nameof(Welder.Update))] [HarmonyPostfix]
     public static void Update_Postfix(Welder __instance)
     {
         if (__instance == null) {Plugin.Logger.LogError($"__instance is null in {nameof(Update_Postfix)}!");return;}
-        _time += Time.deltaTime;
-        if (__instance.usedThisFrame && _time >= 0.1f) {__instance.Weld(); _time = 0.0f; }
+        if (timers.ContainsKey(__instance)) timers[__instance] += Time.deltaTime;
+        if (__instance.usedThisFrame && timers[__instance] >= 0.08f) {__instance.Weld(); timers[__instance] = 0.0f; }
         var tempstorage = __instance.GetComponent<StorageContainer>();
         if (tempstorage == null) {Plugin.Logger.LogError($"tempstorage is null in {nameof(Update_Postfix)}!");return;}
         if (tempstorage.container == null) {Plugin.Logger.LogError("tempstorage.container is null!");return;}
@@ -71,9 +72,17 @@ public class WelderPatches
             __instance.weldEnergyCost /= highestefficiency;
         }
     }
+
+    [HarmonyPatch(nameof(Welder.OnDisable))]
+    [HarmonyPostfix]
+    public static void OnDisable_Postfix(Welder __instance)
+    {
+        timers.Remove(__instance);
+    }
 }
 
 [HarmonyPatch(typeof(CyclopsExternalDamageManager))]
+[HarmonyDebug]
 public class CyclopsExternalDamageManagerPatches
 {
     [HarmonyPatch(nameof(CyclopsExternalDamageManager.RepairPoint))]
@@ -91,26 +100,6 @@ public class CyclopsExternalDamageManagerPatches
         }
         __instance.ToggleLeakPointsBasedOnDamage();
         return false;
-    }
-}
-
-[HarmonyPatch(typeof(Welder))]
-[HarmonyPatch(nameof(Welder.Weld))]
-[HarmonyDebug]
-public static class WelderWeldPatch
-{/*.Advance(-12)
-             .RemoveInstructions(11)
-             .Advance(4)*/
-    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-    {
-        return new CodeMatcher(instructions)
-            .MatchForward(false, new[] {new CodeMatch(OpCodes.Ldarg_0), 
-                new CodeMatch(OpCodes.Call, 
-                    AccessTools.PropertyGetter(typeof(Time), nameof(Time.time))), 
-                new CodeMatch(OpCodes.Stfld, 
-                    AccessTools.Field(typeof(Welder), nameof(Welder.timeLastWelded))) })
-            .RemoveInstructions(3)
-            .InstructionEnumeration();
     }
 }
 
