@@ -17,7 +17,8 @@ public class WelderPatches
     public static void Update_Postfix(Welder __instance)
     {
         if (__instance == null) {Plugin.Logger.LogError($"__instance is null in {nameof(Update_Postfix)}!");return;}
-        if (timers.ContainsKey(__instance)) timers[__instance] += Time.deltaTime;
+        if (!timers.ContainsKey(__instance)) timers[__instance] = 0; 
+        timers[__instance] += Time.deltaTime;
         if (__instance.usedThisFrame && timers[__instance] >= 0.08f) {__instance.Weld(); timers[__instance] = 0.0f; }
         var tempstorage = __instance.GetComponent<StorageContainer>();
         if (tempstorage == null) {Plugin.Logger.LogError($"tempstorage is null in {nameof(Update_Postfix)}!");return;}
