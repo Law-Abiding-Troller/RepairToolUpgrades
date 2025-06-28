@@ -58,6 +58,10 @@ namespace LawAbidingTroller.RepairToolUpgrades
             for (int i = 0; i < 3; i++)
             {
                 var upgradedata = new UpgradeData(0, currentmultiplier);
+                if (i != 0)
+                {
+                    IngredientLists[i].Ingredients.Add(new(PrefabInfos[i - 1].TechType));
+                }
                 RepairToolEfficiencyModules.RepairToolEfficiencyModules.Register(upgradedata, PrefabInfos[i], CustomPrefabs[i], i+1, IngredientLists[i].Ingredients);
                 if (i == 0) continue;
                 currentmultiplier += i+1;
