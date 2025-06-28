@@ -19,9 +19,21 @@ public class WelderPatches
         if (__instance == null) {Plugin.Logger.LogError($"__instance is null in {nameof(Update_Postfix)}!");return;}
         if (!timers.ContainsKey(__instance)) timers[__instance] = 0; 
         timers[__instance] += Time.deltaTime;
-        if (__instance.usedThisFrame && timers[__instance] >= 0.02f) {__instance.Weld(); timers[__instance] = 0.0f; }
         var tempstorage = __instance.GetComponent<StorageContainer>();
         if (tempstorage == null) {Plugin.Logger.LogError($"tempstorage is null in {nameof(Update_Postfix)}!");return;}
+        float highestspeed = 0;
+        foreach (var item in tempstorage.container.GetItemTypes())
+        {
+            if (!UpgradeData.UpgradeDataDict.TryGetValue(item, out var tempdata)) { Plugin.Logger.LogError($"Cannot get TechType '{item}' from dictionary '{nameof(UpgradeData.UpgradeDataDict)}'");continue;}
+            highestspeed = Mathf.Max(highestspeed, tempdata.Speedmultiplier);
+        }
+
+        float timetoweld = 0.047f;
+        if (highestspeed != 0)
+        {
+            timetoweld /= highestspeed;
+        }
+        if (__instance.usedThisFrame && timers[__instance] >= timetoweld) {__instance.Weld(); timers[__instance] = 0.0f; }
         if (tempstorage.container == null) {Plugin.Logger.LogError("tempstorage.container is null!");return;}
         tempstorage.container._label = "REPAIR TOOL";
         var allowedtech = new[]
@@ -46,11 +58,10 @@ public class WelderPatches
     public static void Weld_Prefix(Welder __instance)
     {
         __instance.healthPerWeld = 1f;
-        __instance.weldEnergyCost = 0.1f;
+        __instance.weldEnergyCost = 0.01f;
         var tempstorage = __instance.GetComponent<StorageContainer>();
         if (tempstorage == null) {Plugin.Logger.LogError("Failed to get storage container component for Repair tool!");return;}
         UpgradeData tempdata;
-        float highestspeed = 0;
         float highestefficiency = 0;
         foreach (var item in tempstorage.container.GetItemTypes())
         {
@@ -60,14 +71,7 @@ public class WelderPatches
             {
                 highestefficiency = Mathf.Max(highestefficiency, tempdata.Efficiency);
             }
-            highestspeed = Mathf.Max(highestspeed, tempdata.Speedmultiplier);
         }
-        if (highestspeed == 0 && highestefficiency == 0) return;
-        if (highestspeed != 0)
-        {
-            __instance.healthPerWeld *= highestspeed;
-        }
-
         if (highestefficiency != 0)
         {
             __instance.weldEnergyCost /= highestefficiency;

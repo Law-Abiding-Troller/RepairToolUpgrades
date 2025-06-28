@@ -19,7 +19,7 @@ namespace RepairToolUpgrades.RepairToolModules
         public static TechType TechType = TechType.VehiclePowerUpgradeModule;
         public static void Register()
         {
-            Mk1Weldspeedprefabinfo = PrefabInfo.WithTechType("RepairToolSpeedUpgradeMk1", "Repair Tool Speed Upgrade Mk 1", "Mk 1 Speed Upgrade for the Repair Tool. Decreases the repair time to 3/4s of the normal repair time").WithIcon(SpriteManager.Get(TechType.Welder));
+            Mk1Weldspeedprefabinfo = PrefabInfo.WithTechType("RepairToolSpeedUpgradeMk1", "Repair Tool Speed Upgrade Mk 1", "Mk 1 Speed Upgrade for the Repair Tool. Increases the repair speed by 2x normal").WithIcon(SpriteManager.Get(TechType.Welder));
             UpgradeData.UpgradeDataDict.Add(Mk1Weldspeedprefabinfo.TechType, Mk1Upgradedata);
             Mk1Weldspeedprefab = new CustomPrefab(Mk1Weldspeedprefabinfo);
             var clone = new CloneTemplate(Mk1Weldspeedprefabinfo, TechType);

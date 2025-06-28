@@ -13,13 +13,14 @@ namespace RepairToolUpgrades.RepairToolModules
 {
     public class RepairToolSpeedModuleMk2
     {
-        public static UpgradeData Mk3Upgradedata = new(2.0f);
+        public static UpgradeData Mk2Upgradedata = new(4.0f);
         public static CustomPrefab Mk2Weldspeedprefab;
         public static PrefabInfo Mk2Weldspeedprefabinfo;
         public static TechType TechType = TechType.VehiclePowerUpgradeModule;
         public static void Register()
         {
-            Mk2Weldspeedprefabinfo = PrefabInfo.WithTechType("RepairToolSpeedUpgradeMk2", "Repair Tool Speed Upgrade Mk 2", "Mk 2 Speed Upgrade for the Repair Tool. Halfs the normal repair time.").WithIcon(SpriteManager.Get(TechType.Welder));
+            Mk2Weldspeedprefabinfo = PrefabInfo.WithTechType("RepairToolSpeedUpgradeMk2", "Repair Tool Speed Upgrade Mk 2", "Mk 2 Speed Upgrade for the Repair Tool. Increases repair speed by 4x normal").WithIcon(SpriteManager.Get(TechType.Welder));
+            UpgradeData.UpgradeDataDict.Add(Mk2Weldspeedprefabinfo.TechType, Mk2Upgradedata);
             Mk2Weldspeedprefab = new CustomPrefab(Mk2Weldspeedprefabinfo);
             var clone = new CloneTemplate(Mk2Weldspeedprefabinfo, TechType);
             clone.ModifyPrefab += obj =>
