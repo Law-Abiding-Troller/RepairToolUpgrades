@@ -41,9 +41,9 @@ public class WelderPatches
             RepairToolSpeedModuleMk1.Mk1Weldspeedprefabinfo.TechType,
             RepairToolSpeedModuleMk2.Mk2Weldspeedprefabinfo.TechType,
             RepairToolSpeedModuleMk3.Mk3Weldspeedprefabinfo.TechType,
+            Plugin.PrefabInfos[0].TechType,
             Plugin.PrefabInfos[1].TechType,
-            Plugin.PrefabInfos[2].TechType,
-            Plugin.PrefabInfos[3].TechType
+            Plugin.PrefabInfos[2].TechType
         };
         tempstorage.container.SetAllowedTechTypes(allowedtech);
         if (Input.GetKeyDown(Config.OpenUpgradesContainerkeybind))

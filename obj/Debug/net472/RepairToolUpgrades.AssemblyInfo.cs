@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RepairToolUpgrades")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a797410cdb29bef7c7f5308a41ba88e5230a802c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af4de3349bc2330291e5c61cc8b7318c827e5e58")]
 [assembly: System.Reflection.AssemblyProductAttribute("RepairToolUpgrades")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RepairToolUpgrades")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
