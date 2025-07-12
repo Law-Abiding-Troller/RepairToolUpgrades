@@ -8,13 +8,40 @@ namespace LawAbidingTroller.RepairToolUpgrades.RepairToolEfficiencyModules;
 
 public class RepairToolEfficiencyModules
 {
-    public static void Register(UpgradeData upgrade, PrefabInfo prefabinfo, CustomPrefab prefab, int mk, List<CraftData.Ingredient> recipe)
+    public static PrefabInfo[] PrefabInfos = new PrefabInfo[3];
+    public static CustomPrefab[] CustomPrefabs = new CustomPrefab[3];
+    public static IngredientList[] IngredientLists = { new(new(TechType.Lubricant), new(TechType.Battery)), new(new(TechType.Silicone), new(TechType.WiringKit)), new(new(TechType.AdvancedWiringKit), new(TechType.Aerogel)) };
+    public static void RegisterAll()
     {
-        prefabinfo = PrefabInfo.WithTechType($"RepairToolEfficiencyUpgradeMk{mk}", $"Repair Tool Efficiency Upgrade Mk {mk}", $"Mk {mk} efficiency upgrade for the Repair Tool. Increases the repair efficiency by {upgrade.Efficiency}x normal efficiency.")
-            .WithIcon(SpriteManager.Get(TechType.Welder));
-        UpgradeData.UpgradeDataDict.Add(prefabinfo.TechType, upgrade);
-        prefab = new CustomPrefab(prefabinfo);
-        var clone = new CloneTemplate(prefabinfo, TechType.VehiclePowerUpgradeModule);
+        var currentmultiplier = 2f;
+        for (int i = 0; i < 3; i++)
+        {
+            var tempmultiplier = currentmultiplier;
+            PrefabInfos[i] = PrefabInfo.WithTechType(
+                $"RepairToolEfficiencyUpgradeMk{i+1}",
+                $"Repair Tool Efficiency Upgrade Mk {i+1}",
+                $"Mk {i+1} efficiency upgrade for the Repair Tool. Increases the repair efficiency by {tempmultiplier}x normal speed."
+            ).WithIcon(SpriteManager.Get(TechType.Welder));
+            CustomPrefabs[i] = new CustomPrefab(PrefabInfos[i]);
+            if(i==0)continue;
+            tempmultiplier += i + 1;
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            var upgradedata = new UpgradeData(0, currentmultiplier);
+            if (i > 0)
+            {
+                IngredientLists[i].Ingredients.Add(new CraftData.Ingredient(PrefabInfos[i-1].TechType, 1));
+            }
+            Register(upgradedata, PrefabInfos[i], CustomPrefabs[i], i+1, IngredientLists[i].Ingredients);
+            if (i == 0) continue;
+            currentmultiplier += i+1;
+        }
+    }
+    public static void Register(UpgradeData upgrade, PrefabInfo prefabInfo, CustomPrefab prefab, int mk, List<CraftData.Ingredient> recipe)
+    {
+        UpgradeData.UpgradeDataDict.Add(prefabInfo.TechType, upgrade);
+        var clone = new CloneTemplate(prefabInfo, TechType.VehiclePowerUpgradeModule);
         clone.ModifyPrefab += obj =>
         {
             GameObject model = obj.gameObject;

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -45,27 +46,13 @@ namespace LawAbidingTroller.RepairToolUpgrades
             
             Logger.LogInfo("Plugin fully loaded successfully!");
         }
-
-        public static PrefabInfo[] PrefabInfos = new PrefabInfo[3];
-        public static CustomPrefab[] CustomPrefabs = new CustomPrefab[3];
-        public static IngredientList[] IngredientLists = { new(new(TechType.Lubricant), new(TechType.Battery)), new(new(TechType.Silicone), new(TechType.WiringKit)), new(new(TechType.AdvancedWiringKit), new(TechType.Aerogel)) };
+        
         private void InitializePrefabs()
         {
             RepairToolSpeedModuleMk1.Register();
             RepairToolSpeedModuleMk2.Register();
             RepairToolSpeedModuleMk3.Register();
-            var currentmultiplier = 2;
-            for (int i = 0; i < 3; i++)
-            {
-                var upgradedata = new UpgradeData(0, currentmultiplier);
-                if (i != 0)
-                {
-                    IngredientLists[i].Ingredients.Add(new(PrefabInfos[i - 1].TechType));
-                }
-                RepairToolEfficiencyModules.RepairToolEfficiencyModules.Register(upgradedata, PrefabInfos[i], CustomPrefabs[i], i+1, IngredientLists[i].Ingredients);
-                if (i == 0) continue;
-                currentmultiplier += i+1;
-            }
+            RepairToolEfficiencyModules.RepairToolEfficiencyModules.RegisterAll();
         }
     }
 }
